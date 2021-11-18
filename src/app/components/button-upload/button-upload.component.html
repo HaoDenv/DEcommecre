@@ -1,0 +1,8 @@
+<img class="img-upload" nz-image [nzSrc]="srcDefault | pipeHostImage" alt="" />
+<div class="text-center">
+    <button nz-button (click)="chooseFile()" type="button" class="ant-btn ant-btn-success" nzSize="small">
+        Chọn ảnh
+    </button>
+    <input #inpFile type="file" (change)="onFileChange($event)" accept=".jpg, .png, .jpeg, .gif, .bmp|image/*"
+        style="display: none;" />
+</div>

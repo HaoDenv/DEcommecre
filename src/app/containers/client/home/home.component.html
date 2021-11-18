@@ -1,0 +1,49 @@
+<div>
+    <div class="container">
+        <div nz-row>
+            <div nz-col nzSpan="24">
+                <div class="main-carousel">
+                    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                        <div ngxSlickItem *ngFor="let banner of mainBanner" class="slide">
+                            <img [src]="banner.Image | hostImageClient" alt="" width="100%">
+                        </div>
+                    </ngx-slick-carousel>
+                </div>
+            </div>
+        </div>
+        <div class="top-collection">
+            <div class="top-collection-title" align="center">
+                <h3 class="title-border-left-right">SẢN PHẨM NỔI BẬT</h3>
+            </div>
+            <div class="top-collection-product">
+                <div nz-row>
+                    <div nz-col nzSpan="4-8" *ngFor="let item of productSellings">
+                        <app-product-template [product]="item"></app-product-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngFor="let menu of menuHomePages" class="category-highlight">
+            <h3 class="title-border-right">{{menu.Name}}</h3>
+            <a routerLink="/{{menu.Alias}}" class="view-all">
+                <span>Xem tất cả</span>
+                <i nz-icon nzType="right-circle" nzTheme="outline"></i>
+            </a>
+            <div nz-row>
+                <div nz-col nzSpan="4-8" *ngFor="let product of menu.Products">
+                    <app-product-template [product]="product"></app-product-template>
+                </div>
+            </div>
+        </div>
+
+        <div class="article-highlight">
+            <h3 class="title-border-right">TIN TỨC & SỰ KIỆN</h3>
+            <div nz-row>
+                <div nz-col nzSpan="4-8" *ngFor="let article of highlightArticle">
+                    <app-article-template [article]="article"></app-article-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

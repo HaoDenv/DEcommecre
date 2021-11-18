@@ -1,0 +1,68 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible"
+    [nzTitle]="isAddNew?'Thêm mới':'Thông tin chi tiết'" [nzFooter]="footerTpl" (nzOnClose)="close()">
+    <form nz-form *nzDrawerContent nzLayout="vertical" [formGroup]="formData" (ngSubmit)="submit()">
+        <div nz-row>
+            <div nz-col nzSpan="8">
+                <nz-form-item>
+                    <nz-form-label nzRequired>Tên tài khoản </nz-form-label>
+                    <nz-form-control nzErrorTip="Không được để trống!">
+                        <input type="text" nz-input nzSize="small" formControlName="UserName" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div *ngIf="isAddNew" nz-col nzSpan="8">
+                <nz-form-item>
+                    <nz-form-label nzRequired>Mật khẩu </nz-form-label>
+                    <nz-form-control nzErrorTip="Không được để trống!">
+                        <input type="text" nz-input nzSize="small" formControlName="Password" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="8">
+                <nz-form-item>
+                    <nz-form-label nzRequired>Họ tên </nz-form-label>
+                    <nz-form-control nzErrorTip="Không được để trống!">
+                        <input type="text" nz-input nzSize="small" formControlName="FullName" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col nzSpan="8">
+                <nz-form-item>
+                    <nz-form-label>Số điện thoại </nz-form-label>
+                    <nz-form-control>
+                        <input type="text" nz-input nzSize="small" formControlName="Phone" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="8">
+                <nz-form-item>
+                    <nz-form-label>Email </nz-form-label>
+                    <nz-form-control>
+                        <input type="text" nz-input nzSize="small" formControlName="Email" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="8">
+                <nz-form-item>
+                    <nz-form-label>Hoạt động</nz-form-label>
+                    <nz-form-control>
+                        <label nz-checkbox formControlName="Active"></label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+
+    <ng-template #footerTpl>
+        <div style="float: left">
+            <button (click)="resetPassword()" nz-button nzType="primary" nzDanger>Đổi mật khẩu</button>
+        </div>
+        <div style="float: right">
+            <button nz-button (click)="close()">Hủy</button>
+            <button (click)="submit()" nz-button nzType="primary">Lưu lại</button>
+        </div>
+    </ng-template>
+
+</nz-drawer>

@@ -1,0 +1,124 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="1000" [nzVisible]="visible"
+    nzTitle="Thông tin đơn hàng" [nzFooter]="footerTpl" (nzOnClose)="close()">
+    <div nz-form *nzDrawerContent nzLayout="vertical">
+        <div *ngIf="order != null" nz-row>
+            <div nz-col nzSpan="24" class="mg-b">
+                <div nz-form nzLayout="vertical">
+                    <div nz-row>
+                        <div nz-col nzSpan="6">
+                            <nz-form-item>
+                                <nz-form-label>Mã đơn hàng</nz-form-label>
+                                <nz-form-control>
+                                    <input type="text" nz-input nzSize="small" [value]="order.Id" disabled />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzSpan="6">
+                            <nz-form-item>
+                                <nz-form-label>Ngày đặt hàng</nz-form-label>
+                                <nz-form-control>
+                                    <input type="text" nz-input nzSize="small"
+                                        [value]="order.Created | date:'HH:mm dd-MM-yyyy'" disabled />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzSpan="6">
+                            <nz-form-item>
+                                <nz-form-label>Trạng thái đơn hàng</nz-form-label>
+                                <nz-form-control>
+                                    <input type="text" nz-input nzSize="small" [value]="order.Status | orderStatus"
+                                        disabled />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div nz-col nzSpan="24">
+                <h4>Chi tiết đơn hàng</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr style="background: #5189B9;color: white;">
+                            <th colSpan="2">Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                        <tr *ngFor="let orderDetail of order.OrderDetails">
+                            <td class="text-center">
+                                <img [src]="orderDetail.ProductImage | pipeHostImage"
+                                    style="width: 50px;border: 1px solid #dcdcdc;padding: 1px;min-width: 50px;" />
+                            </td>
+                            <td>
+                                <div>
+                                    {{orderDetail.ProductName}}
+                                </div>
+                                <div *ngIf="orderDetail.Attribute != null && orderDetail.Attribute != ''"
+                                    style="border: 1px solid #dcdcdc;display: inline-block;padding: 2px 5px 2px 10px;margin: 5px 0 0;">
+                                    <div [innerHTML]="orderDetail.Attribute"> </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <b class="mg-r">
+                                    <small>
+                                        <s>
+                                            {{orderDetail.ProductPrice | number}} ₫
+                                        </s>
+                                    </small>
+                                </b>
+                                <b>
+                                    {{orderDetail.ProductDiscountPrice | number}} ₫
+                                </b>
+                            </td>
+                            <td class="text-center">
+                                {{orderDetail.Qty}}
+                            </td>
+                            <td class="text-right">
+                                <b>
+                                    {{(orderDetail.ProductDiscountPrice * orderDetail.Qty) | number}} ₫
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" colspan="4">
+                                <h4>Tổng tiền</h4>
+                            </td>
+                            <td class="text-right">
+                                <h4 style="color:red">
+                                    {{getTotalAmount | number}} ₫
+                                </h4>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button nz-button (click)="close()">Đóng</button>
+
+            <ng-container *ngIf="order != null">
+                <button *ngIf="order.Status == 10 || order.Status == 20 || order.Status == 30"
+                    (click)="updateStatus(50)" nz-button nzType="primary" nzDanger>
+                    Hủy đơn hàng
+                </button>
+
+                <button *ngIf="order.Status == 10" (click)="updateStatus(20)" nz-button nzType="primary">
+                    Xác nhận đơn hàng
+                </button>
+
+                <button *ngIf="order.Status == 20" (click)="updateStatus(30)" nz-button nzType="primary">
+                    Chuyển vận chuyển
+                </button>
+
+                <button *ngIf="order.Status == 30" (click)="updateStatus(40)" nz-button nzType="primary">
+                    Hoàn thành giao hàng
+                </button>
+            </ng-container>
+
+        </div>
+    </ng-template>
+
+</nz-drawer>

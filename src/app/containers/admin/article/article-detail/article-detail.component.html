@@ -1,0 +1,93 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="'90%'" [nzVisible]="visible"
+    [nzTitle]="isAddNew?'Thêm mới':'Thông tin chi tiết'" [nzFooter]="footerTpl" (nzOnClose)="close()">
+    <form nz-form *nzDrawerContent nzLayout="vertical" [formGroup]="formData" (ngSubmit)="submit()">
+        <div nz-row>
+            <div nz-col nzSpan="5">
+                <nz-form-item>
+                    <nz-form-label>Hình ảnh</nz-form-label>
+                    <nz-form-control>
+                        <button-upload (onload)="onloadImage($event)" [srcDefault]="srcImage">
+                        </button-upload>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="19">
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Danh mục bài viết </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <nz-select formControlName="MenuId" nzSize="small" nzPlaceHolder="------"
+                                    class="width-full">
+                                    <nz-option *ngFor="let item of menus" [nzValue]="item.Id"
+                                        [nzLabel]="item.ParentMenu == null?item.Name:' &emsp;__'+item.Name">
+                                    </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="5">
+                        <nz-form-item>
+                            <nz-form-label>Thứ tự hiển thị</nz-form-label>
+                            <nz-form-control class="width-full">
+                                <nz-input-number nzSize="small" formControlName="Index" [nzMin]="1" [nzStep]="1">
+                                </nz-input-number>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="7">
+                        <nz-form-item>
+                            <nz-form-label>Active</nz-form-label>
+                            <nz-form-control>
+                                <label nz-checkbox formControlName="Active"></label>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Tiêu đề bài viết </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <textarea (keyup)="changeTitle($event)" type="text" nz-input
+                                    formControlName="Title"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Alias </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <textarea type="text" nz-input formControlName="Alias"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="24">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <nz-tabset>
+                                    <nz-tab nzTitle="Mô tả ngắn">
+                                        <angular-editor formControlName="ShortDescription" [config]="config">
+                                        </angular-editor>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Mô tả chi tiết">
+                                        <angular-editor formControlName="Description" [config]="config">
+                                        </angular-editor>
+                                    </nz-tab>
+                                </nz-tabset>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button nz-button (click)="close()">Hủy</button>
+            <button (click)="submit()" nz-button nzType="primary">Lưu lại</button>
+        </div>
+    </ng-template>
+
+</nz-drawer>

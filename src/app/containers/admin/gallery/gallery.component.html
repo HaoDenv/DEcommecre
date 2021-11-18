@@ -1,0 +1,57 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Banner
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row class="mg-t">
+    <div nz-col nzSpan="24">
+        <button (click)="getData()" nz-button nzSize="small" nzType="primary">
+            <i nz-icon nzType="search" nzTheme="outline"></i>
+            Refresh
+        </button>
+        <button (click)="addNew()" nz-button nzSize="small" nzType="primary">
+            <i nz-icon nzType="plus" nzTheme="outline"></i>
+            Thêm mới
+        </button>
+    </div>
+
+    <div nz-col nzSpan="24" class="mg-t">
+        <nz-table #tblData [nzData]="datas" [nzPageSize]="12">
+            <thead>
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th style="width:80px">Loại</th>
+                    <th style="width:80px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tblData.data">
+                    <td>
+                        <img class="img-gallery" nz-image [nzSrc]="data.Image | pipeHostImage" alt="" />
+                    </td>
+                    <td class="text-center">
+                        <ng-container *ngIf="data.Type == 1; else elseTemplate">
+                            Chính
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                            Phụ
+                        </ng-template>
+                    </td>
+                    <td class="no-wrap">
+                        <button nz-popconfirm nzPopconfirmTitle="Xác nhận xóa?" (nzOnConfirm)="delete(data)"
+                            nzPopconfirmPlacement="topRight" nz-button nzDanger nzType="primary" nzSize="small">
+                            Xóa
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<app-gallery-detail #frmDetail (onSubmit)="onSubmit($event)"></app-gallery-detail>
+<ngx-spinner></ngx-spinner>

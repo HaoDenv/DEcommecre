@@ -1,0 +1,42 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Mẫu gửi email
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row class="mg-t">
+    <div nz-col nzSpan="24">
+        <button (click)="getData()" nz-button nzSize="small" nzType="primary">
+            <i nz-icon nzType="search" nzTheme="outline"></i>
+            Refresh
+        </button>
+    </div>
+    <div nz-col nzSpan="24" class="mg-t">
+        <nz-table #tblData [nzData]="datas" [nzPageSize]="12">
+            <thead>
+                <tr>
+                    <th style="width:300px">Mẫu gửi mail</th>
+                    <th>Subject</th>
+                    <th style="width:160px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tblData.data">
+                    <td>{{ data.Type }}</td>
+                    <td>{{ data.Subject }}</td>
+                    <td class="no-wrap">
+                        <button (click)="showDetail(data)" nz-button nzSize="small" class="mg-r">
+                            Xem chi tiết
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<app-email-template-detail #frmDetail (onSubmit)="onSubmit($event)"></app-email-template-detail>
+<ngx-spinner></ngx-spinner>

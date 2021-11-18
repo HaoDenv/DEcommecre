@@ -1,0 +1,44 @@
+<div>
+    <div class="box-auth">
+        <div>
+            <h4>Đăng nhập</h4>
+        </div>
+        <form nz-form [formGroup]="formData" class="login-form" (ngSubmit)="onSubmit()">
+            <div class="mg-b">
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Không được để trống!">
+                        <nz-input-group nzPrefixIcon="mail">
+                            <input type="text" nz-input formControlName="Email" placeholder="Email" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div class="mg-b">
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Không được để trống!">
+                        <nz-input-group nzPrefixIcon="lock">
+                            <input type="password" nz-input formControlName="Password" placeholder="Mật khẩu" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div>
+                <div nz-row class="login-form-margin">
+                    <div nz-col [nzSpan]="12">
+                        <label nz-checkbox formControlName="Remember">
+                            <span>Nhớ đăng nhập</span>
+                        </label>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                        <a routerLink="/quen-mat-khau" class="login-form-forgot">Quên mật khẩu</a>
+                    </div>
+                </div>
+                <button type="submit" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
+                    Đăng nhập
+                </button>
+                Bạn chưa có tài khoản?
+                <a routerLink="/dang-ky-tai-khoan">Đăng ký</a>
+            </div>
+        </form>
+    </div>
+</div>

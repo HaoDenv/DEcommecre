@@ -1,0 +1,35 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible"
+    nzTitle="Thêm mới" [nzFooter]="footerTpl" (nzOnClose)="close()">
+    <form nz-form *nzDrawerContent nzLayout="vertical" [formGroup]="formData" (ngSubmit)="submit()">
+        <div nz-row>
+            <div nz-col nzSpan="8">
+                <nz-form-item>
+                    <nz-form-label nzRequired>Loại banner </nz-form-label>
+                    <nz-form-control nzErrorTip="Không được để trống!">
+                        <nz-select formControlName="Type" nzSize="small" nzPlaceHolder="------" class="width-full">
+                            <nz-option [nzValue]="1" nzLabel="Chính"> </nz-option>
+                            <nz-option [nzValue]="2" nzLabel="Phụ"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="24">
+                <nz-form-item>
+                    <nz-form-label>Banner</nz-form-label>
+                    <nz-form-control>
+                        <button-upload (onload)="onloadBanner($event)" [srcDefault]="srcBanner">
+                        </button-upload>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button nz-button (click)="close()">Hủy</button>
+            <button (click)="submit()" nz-button nzType="primary">Lưu lại</button>
+        </div>
+    </ng-template>
+
+</nz-drawer>

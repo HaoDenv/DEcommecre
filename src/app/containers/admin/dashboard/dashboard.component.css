@@ -1,0 +1,22 @@
+.box-highlight-dashboard {
+  margin: 10px 5px;
+  border: 1px solid #e8e8e8;
+  text-align: center;
+  min-height: 80px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f9f9f9;
+  box-shadow: 0 1px 4px #efefef;
+}
+.box-highlight-dashboard .box-highlight-dashboard-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #394868;
+}
+.box-highlight-dashboard .box-highlight-dashboard-value {
+  font-size: 18px;
+  color: #de8905;
+}

@@ -1,0 +1,172 @@
+<div class="container">
+    <div class="box-breadcrumb">
+        <nz-breadcrumb>
+            <nz-breadcrumb-item>
+                <a routerLink="/">Trang chủ</a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>
+                Giỏ hàng
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </div>
+    <div>
+        <ng-container *ngIf="orderDetail.length == 0; else elseTemplate">
+            <div nz-row>
+                <div nz-col nzSpan="24">
+                    <div class="text-center mg-b">
+                        <h3 style="color: red;">Không có sản phẩm trong giỏ hàng</h3>
+                    </div>
+                    <div class="text-center">
+                        <a routerLink="/" nz-button nzDanger nzType="primary">Quay lại trang chủ</a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+            <div nz-row>
+                <div nz-col nzLg="16" nzMd="24" nzSm="24" nzXs="24" class="mg-b">
+                    <div class="mg-b">
+                        <h3 class="text-center">Thông tin giỏ hàng</h3>
+                    </div>
+                    <div style="overflow: auto;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background: #f4f4f4;">
+                                    <th colspan="2">Sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let product of orderDetail">
+                                    <tr>
+                                        <td rowSpan="{{product.Attributes != null && product.Attributes.length > 0?2:1}}"
+                                            class="text-center">
+                                            <img [src]="product.ProductImage | hostImageClient"
+                                                style="width: 50px;border: 1px solid #dcdcdc;padding: 1px;min-width: 50px;" />
+                                        </td>
+                                        <td>
+                                            <a routerLink="/san-pham/{{product.ProductAlias}}" class="text-black">
+                                                {{product.ProductName}}
+                                            </a>
+                                        </td>
+                                        <td class="text-right">
+                                            <b>
+                                                {{product.ProductDiscountPrice | number}} ₫
+                                            </b>
+                                        </td>
+                                        <td>
+                                            <nz-input-number (ngModelChange)="product.Qty = $event;updateCart()"
+                                                [ngModel]="product.Qty" [nzMin]="0" nzSize="small" [nzStep]="1">
+                                            </nz-input-number>
+                                        </td>
+                                        <td class="text-right">
+                                            <b>
+                                                {{(product.ProductDiscountPrice * product.Qty) | number}} ₫
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="product.Attributes != null && product.Attributes.length > 0">
+                                        <td colSpan="4">
+                                            <div class="product-detail-attribute" style="margin: 0;font-size: 12px;">
+                                                <table class="table-product-attribute">
+                                                    <tbody>
+                                                        <tr *ngFor="let attribute of product.Attributes">
+                                                            <td style="width: 80px;">
+                                                                <b>{{attribute.Name}}</b>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    (click)="chooseAttribute(attribute.ProductAttributes,index)"
+                                                                    *ngFor="let item of attribute.ProductAttributes;index as index"
+                                                                    class="attribute {{item.Checked?'active':''}}">
+                                                                    {{item.Value}}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <tr>
+                                    <td class="text-right" colspan="4">
+                                        <h4>Tổng tiền</h4>
+                                    </td>
+                                    <td class="text-right">
+                                        <h4 style="color:red">
+                                            {{getTotalAmount | number}} ₫
+                                        </h4>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mg-t">
+                        <a routerLink="/" nz-button nzType="primary">Tiếp tục mua hàng</a>
+                    </div>
+                </div>
+                <div nz-col nzLg="8" nzMd="24" nzSm="24" nzXs="24">
+                    <div>
+                        <h3 class="text-center">Thông tin liên hệ</h3>
+                    </div>
+                    <div style="padding: 0 10px;">
+                        <form nz-form [formGroup]="formData" (ngSubmit)="submitForm()">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 150px">Họ và tên <span class="text-red">(*)</span></td>
+                                        <td>
+                                            <input nz-input formControlName="FullName" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số điện thoại <span class="text-red">(*)</span></td>
+                                        <td>
+                                            <nz-form-control nzErrorTip="Không được để trống!">
+                                                <input nz-input formControlName="PhoneNumber"
+                                                    placeholder="Nhập số điện thoại" />
+                                            </nz-form-control>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Địa chỉ liên hệ <span class="text-red">(*)</span></td>
+                                        <td>
+                                            <nz-form-control nzErrorTip="Không được để trống!">
+                                                <input nz-input formControlName="Address"
+                                                    placeholder="Nhập địa chỉ liên hệ" />
+                                            </nz-form-control>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ghi chú</td>
+                                        <td>
+                                            <nz-form-control nzErrorTip="Không được để trống!">
+                                                <textarea formControlName="Note" rows="2" nz-input></textarea>
+                                            </nz-form-control>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <button type="submit" nz-button nzType="primary" [nzLoading]="nzLoading">Đặt
+                                                hàng</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <i>Lưu ý: Các ô có dấu <span class="text-red">(*)</span> cần điền đầy đủ
+                                                thông
+                                                tin</i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

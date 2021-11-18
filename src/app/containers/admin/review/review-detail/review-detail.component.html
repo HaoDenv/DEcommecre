@@ -1,0 +1,38 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="600" [nzVisible]="visible"
+    nzTitle="Thông tin chi tiết" [nzFooter]="footerTpl" (nzOnClose)="close()">
+    <div nz-form *nzDrawerContent nzLayout="vertical">
+        <div *ngIf="review != null" nz-row>
+            <div nz-col nzSpan="12">
+                <nz-form-item>
+                    <nz-form-label>Trạng thái</nz-form-label>
+                    <nz-form-control>
+                        <nz-select [(ngModel)]="review.Status">
+                            <nz-option nzLabel="Chờ duyệt" [nzValue]="10"> </nz-option>
+                            <nz-option nzLabel="Đã duyệt" [nzValue]="20"> </nz-option>
+                            <nz-option nzLabel="Cập nhật lại - Chờ duyệt" [nzValue]="30"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="24" style="margin: 20px 0;">
+                <nz-rate [(ngModel)]="review.Star" [nzDisabled]="true"></nz-rate>
+            </div>
+            <div nz-col nzSpan="24">
+                <nz-form-item>
+                    <nz-form-label>Nội dung</nz-form-label>
+                    <nz-form-control>
+                        <textarea [value]="review.Content" rows="4" nz-input nzSize="small" disabled></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button nz-button (click)="close()">Hủy</button>
+            <button (click)="submit()" nz-button nzType="primary">Cập nhật trạng thái</button>
+        </div>
+    </ng-template>
+
+</nz-drawer>

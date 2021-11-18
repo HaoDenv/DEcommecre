@@ -1,0 +1,49 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Danh sách Email đăng ký nhận tin
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row class="mg-t">
+    <div nz-col nzSpan="10">
+        <nz-form-item>
+            <nz-form-label>Từ khóa tìm kiếm</nz-form-label>
+            <nz-form-control>
+                <input (keyup.enter)="getData()" [(ngModel)]="filter.keySearch" type="text" nz-input nzSize="small"
+                    placeholder="Email" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="6">
+        <nz-form-item>
+            <nz-form-control>
+                <button (click)="getData()" nz-button nzSize="small" nzType="primary">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    Tìm kiếm
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24" class="mg-t">
+        <nz-table #tblData [nzData]="datas" [nzPageSize]="12">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th style="width:160px">Ngày đăng ký</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tblData.data">
+                    <td>{{ data.Email }}</td>
+                    <td>{{ data.Created | date:'HH:mm dd-MM-yyyy' }}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<ngx-spinner></ngx-spinner>

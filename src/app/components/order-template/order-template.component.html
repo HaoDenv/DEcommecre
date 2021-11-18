@@ -1,0 +1,167 @@
+<div *ngIf="order != null" style="margin-bottom: 20px;overflow: auto;">
+    <table class="table table-bordered">
+        <tbody>
+            <tr style="background: #f5f5f5;">
+                <td colSpan="5">
+                    <div nz-row>
+                        <div nz-col nzSpan="8">
+                            <h3><strong>Mã đơn hàng: </strong> {{order.Id}}</h3>
+                        </div>
+                        <div nz-col nzSpan="8">
+                            <strong>Ngày đặt hàng: </strong> {{order.Created | date:'HH:mm dd-MM-yyyy'}}
+                        </div>
+                        <div nz-col nzSpan="8">
+                            <strong>Số điện thoại: </strong> {{order.PhoneNumber}}
+                        </div>
+                        <div nz-col nzSpan="24">
+                            <strong>Địa chỉ liên hệ: </strong> {{order.Address}}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th colSpan="2">Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+            <tr *ngFor="let orderDetail of order.OrderDetails">
+                <td class="text-center">
+                    <img [src]="orderDetail.ProductImage | hostImageClient"
+                        style="width: 50px;border: 1px solid #dcdcdc;padding: 1px;min-width: 50px;" />
+                </td>
+                <td>
+                    <div>
+                        {{orderDetail.ProductName}}
+                    </div>
+                    <div *ngIf="orderDetail.Attribute != null && orderDetail.Attribute != ''"
+                        style="border: 1px solid #dcdcdc;display: inline-block;padding: 2px 5px 2px 10px;margin: 5px 0 0;">
+                        <div [innerHTML]="orderDetail.Attribute"> </div>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <b class="mg-r">
+                        <small>
+                            <s>
+                                {{orderDetail.ProductPrice | number}} ₫
+                            </s>
+                        </small>
+                    </b>
+                    <b>
+                        {{orderDetail.ProductDiscountPrice | number}} ₫
+                    </b>
+                </td>
+                <td class="text-center">
+                    {{orderDetail.Qty}}
+                </td>
+                <td class="text-right">
+                    <b>
+                        {{(orderDetail.ProductDiscountPrice * orderDetail.Qty) | number}} ₫
+                    </b>
+                    <div *ngIf="order.Status == 40">
+                        <button (click)="review(orderDetail)" nz-button nzType="primary" nzSize="small">
+                            <ng-container
+                                *ngIf="(orderDetail.Reviews != null && orderDetail.Reviews.length > 0) || orderDetail.IsReview; else elseTemplate">
+                                Xem lại đánh giá
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                Đánh giá
+                            </ng-template>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" colspan="4">
+                    <h4>Tổng tiền</h4>
+                </td>
+                <td class="text-right">
+                    <h4 style="color:red">
+                        {{getTotalAmount | number}} ₫
+                    </h4>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<nz-modal [(nzVisible)]="isVisibleModal" nzTitle="Đánh giá sản phẩm" [nzWidth]="1000" [nzStyle]="{ top: '20px' }"
+    (nzOnCancel)="isVisibleModal = !isVisibleModal" [nzFooter]="modalFooter">
+    <ng-container *nzModalContent>
+        <div *ngIf="orderDetailSelected != null && reviewModel != null" nz-row>
+            <div nz-col nzSpan="24" style="overflow: auto;">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr style="background: #5189B9;color: white;">
+                            <th colSpan="2">Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <img [src]="orderDetailSelected.ProductImage | hostImageClient"
+                                    style="width: 50px;border: 1px solid #dcdcdc;padding: 1px;min-width: 50px;" />
+                            </td>
+                            <td>
+                                <div>
+                                    {{orderDetailSelected.ProductName}}
+                                </div>
+                                <div *ngIf="orderDetailSelected.Attribute != null && orderDetailSelected.Attribute != ''"
+                                    style="border: 1px solid #dcdcdc;display: inline-block;padding: 2px 5px 2px 10px;margin: 5px 0 0;">
+                                    <div [innerHTML]="orderDetailSelected.Attribute"> </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <b class="mg-r">
+                                    <small>
+                                        <s>
+                                            {{orderDetailSelected.ProductPrice | number}} ₫
+                                        </s>
+                                    </small>
+                                </b>
+                                <b>
+                                    {{orderDetailSelected.ProductDiscountPrice | number}} ₫
+                                </b>
+                            </td>
+                            <td class="text-center">
+                                {{orderDetailSelected.Qty}}
+                            </td>
+                            <td class="text-right">
+                                <b>
+                                    {{(orderDetailSelected.ProductDiscountPrice * orderDetailSelected.Qty) | number}} ₫
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div nz-col nzSpan="24">
+                <div style="margin: 20px 0;">
+                    <nz-rate [(ngModel)]="reviewModel.Star" [nzTooltips]="tooltips"></nz-rate>
+                </div>
+                <div>
+                    <textarea [(ngModel)]="reviewModel.Content" placeholder="Nội dung" nz-input rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #modalFooter>
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button (click)="isVisibleModal = !isVisibleModal">Đóng</button>
+                <button nz-button (click)="confirmReview()" nzType="primary">
+                    <ng-container
+                        *ngIf="(orderDetailSelected.Reviews != null && orderDetailSelected.Reviews.length > 0) || orderDetailSelected.IsReview; else elseTemplate">
+                        Đánh giá lại
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        Đánh giá
+                    </ng-template>
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </ng-template>
+</nz-modal>

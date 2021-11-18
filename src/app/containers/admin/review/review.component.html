@@ -1,0 +1,98 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Quản lý đánh giá sản phẩm
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row class="mg-t">
+    <div nz-col nzSpan="10">
+        <nz-form-item>
+            <nz-form-label>Từ khóa tìm kiếm</nz-form-label>
+            <nz-form-control>
+                <input (keyup.enter)="getData()" [(ngModel)]="filter.keySearch" type="text" nz-input nzSize="small"
+                    placeholder="Tên sản phẩm, nội dung đánh giá, người đánh giá" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="6">
+        <nz-form-item>
+            <nz-form-label>Trạng thái</nz-form-label>
+            <nz-form-control>
+                <nz-select [(ngModel)]="filter.status" nzSize="small" nzAllowClear nzPlaceHolder="Tất cả"
+                    class="width-full" style="width: 100%;">
+                    <nz-option nzLabel="Chờ duyệt" [nzValue]="10"> </nz-option>
+                    <nz-option nzLabel="Đã duyệt" [nzValue]="20"> </nz-option>
+                    <nz-option nzLabel="Cập nhật lại - Chờ duyệt" [nzValue]="30"> </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="8">
+        <nz-form-item>
+            <nz-form-control>
+                <button (click)="getData()" nz-button nzSize="small" nzType="primary">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    Tìm kiếm
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24" class="mg-t">
+        <nz-table #tblData [nzData]="datas" [nzPageSize]="12">
+            <thead>
+                <tr>
+                    <th style="width:80px">Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th class="text-center" style="width:50px">Rate</th>
+                    <th>Ngày đánh giá</th>
+                    <th>Người đánh giá</th>
+                    <th>Nội dung</th>
+                    <th class="text-center" style="width:100px">Trạng thái</th>
+                    <th style="width:80px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tblData.data">
+                    <td class="text-center">
+                        <img [src]="data.Product?.Image | pipeHostImage" alt="" class="img-product">
+                    </td>
+                    <td>
+                        <a href="/san-pham/{{data.Product?.Alias}}" target="_blank">
+                            {{ data.Product?.Name }}
+                        </a>
+                    </td>
+                    <td class="text-center">{{ data.Star }}</td>
+                    <td class="text-center no-wrap">{{ data.Created | date:'HH:mm dd-MM-yyyy' }}
+                    </td>
+                    <td class="no-wrap">{{ data.CreatedBy }}</td>
+                    <td>{{ data.Content }}</td>
+                    <td class="no-wrap">
+                        <span [ngSwitch]="data.Status">
+                            <span *ngSwitchCase="10">
+                                <nz-badge nzStatus="warning" nzText="Chờ duyệt"></nz-badge>
+                            </span>
+                            <span *ngSwitchCase="20">
+                                <nz-badge nzStatus="success" nzText="Đã duyệt"></nz-badge>
+                            </span>
+                            <span *ngSwitchCase="30">
+                                <nz-badge nzStatus="warning" nzText="Cập nhật lại - Chờ duyệt"></nz-badge>
+                            </span>
+                        </span>
+                    </td>
+                    <td class="no-wrap">
+                        <button (click)="showDetail(data)" nz-button nzSize="small" class="mg-r">
+                            Xem chi tiết
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<app-review-detail #frmDetail (onSubmit)="onSubmit($event)"></app-review-detail>
+<ngx-spinner></ngx-spinner>

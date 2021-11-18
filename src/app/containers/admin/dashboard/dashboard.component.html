@@ -1,0 +1,108 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Tổng quan
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div *ngIf="dataHighlight != null" nz-row>
+    <div nz-col nzSpan="4">
+        <div class="box-highlight-dashboard">
+            <div class="box-highlight-dashboard-title">
+                Tổng đơn hàng <small>(ngày)</small>
+            </div>
+            <div class="box-highlight-dashboard-value">
+                <strong>{{dataHighlight.TotalNewOrder | number}}</strong>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzSpan="4">
+        <div class="box-highlight-dashboard">
+            <div class="box-highlight-dashboard-title">
+                Tổng đơn hàng <small>(tháng)</small>
+            </div>
+            <div class="box-highlight-dashboard-value">
+                <strong>{{dataHighlight.TotalOrder | number}}</strong>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzSpan="4">
+        <div class="box-highlight-dashboard">
+            <div class="box-highlight-dashboard-title">
+                Doanh thu <small>(ngày)</small>
+            </div>
+            <div class="box-highlight-dashboard-value">
+                <strong>{{dataHighlight.DailySales | number}} ₫</strong>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzSpan="4">
+        <div class="box-highlight-dashboard">
+            <div class="box-highlight-dashboard-title">
+                Doanh thu <small>(tháng)</small>
+            </div>
+            <div class="box-highlight-dashboard-value">
+                <strong>{{dataHighlight.SalesRevenue | number}} ₫</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="dataHighlight != null" nz-row class="mg-t-md">
+    <div nz-col nzSpan="8" style="padding-right: 10px !important;">
+        <div nz-row>
+            <div nz-col nzSpan="16">
+                <h4>Tình trạng đơn hàng</h4>
+            </div>
+            <div nz-col nzSpan="8" class="text-right">
+                <nz-month-picker (ngModelChange)="date = $event;getData()" [ngModel]="date" nzPlaceHolder="Chọn tháng"
+                    nzSize="small" nzFormat="MM/yyyy">
+                </nz-month-picker>
+            </div>
+            <div nz-col nzSpan="24">
+                <div style="overflow: hidden;">
+                    <google-chart [type]="chartStatus.type" [height]="300"
+                        style="width: calc(100% + 150px);margin-top: -10px;margin-left: -90px;"
+                        [options]="chartStatus.options" [data]="chartStatus.data">
+                    </google-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzSpan="8" style="padding-right: 10px !important;">
+        <div nz-row>
+            <div nz-col nzSpan="18">
+                <h4>Thống kê lượng đơn hàng</h4>
+            </div>
+            <div nz-col nzSpan="6" class="text-right">
+                <nz-year-picker (ngModelChange)="date = $event;getData()" [ngModel]="date" nzSize="small"
+                    nzPlaceHolder="Chọn năm">
+                </nz-year-picker>
+            </div>
+            <div nz-col nzSpan="24">
+                <google-chart [type]="chartOrder.type" [height]="300" style="width: 100%;"
+                    [options]="chartOrder.options" [data]="chartOrder.data">
+                </google-chart>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzSpan="8">
+        <div nz-row>
+            <div nz-col nzSpan="18">
+                <h4>Thống kê doanh thu</h4>
+            </div>
+            <div nz-col nzSpan="6" class="text-right">
+                <nz-year-picker (ngModelChange)="date = $event;getData()" [ngModel]="date" nzSize="small"
+                    nzPlaceHolder="Chọn năm">
+                </nz-year-picker>
+            </div>
+            <div nz-col nzSpan="24">
+                <google-chart [type]="chartRevenue.type" [height]="300" style="width: 100%;"
+                    [options]="chartRevenue.options" [data]="chartRevenue.data">
+                </google-chart>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Thông tin Website
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<form nz-form nzLayout="vertical" [formGroup]="formData" (ngSubmit)="submit()">
+    <div nz-row class="mg-t">
+        <div nz-col nzSpan="6">
+            <div nz-row>
+                <div nz-col nzSpan="24" class="mg-b">
+                    <nz-form-item>
+                        <nz-form-label>Logo</nz-form-label>
+                        <nz-form-control>
+                            <button-upload (onload)="onloadLogo($event)" [srcDefault]="srcLogo">
+                            </button-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </div>
+        <div nz-col nzSpan="18">
+            <div nz-row>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label nzRequired>Tên website</nz-form-label>
+                        <nz-form-control nzErrorTip="Không được để trống!">
+                            <input type="text" nz-input nzSize="small" formControlName="Name" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Số điện thoại</nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" formControlName="PhoneNumber" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Fax</nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" formControlName="Fax" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Email</nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" formControlName="Email" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Facebook</nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" formControlName="Facebook" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Youtube</nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" formControlName="Youtube" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Copyright</nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" formControlName="Copyright" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label>Địa chỉ</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input formControlName="Address"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label>Map</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input formControlName="Location"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mg-t">
+        <button type="submit" class="ant-btn ant-btn-primary"><span>Lưu lại</span></button>
+    </div>
+</form>
+<ngx-spinner></ngx-spinner>

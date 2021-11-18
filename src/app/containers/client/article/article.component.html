@@ -1,0 +1,36 @@
+<div *ngIf="article != null" class="container">
+    <div class="box-breadcrumb">
+        <nz-breadcrumb>
+            <nz-breadcrumb-item>
+                <a routerLink="/">Trang chủ</a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>
+                {{article.Title}}
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </div>
+    <div>
+        <div nz-row>
+            <div nz-col nzLg="18" nzMd="16" nzSm="24" nzXs="24" nzSpan="18">
+                <div>
+                    <small>Ngày đăng: {{article.Created | date:'HH:mm dd-MM-yyyy'}}</small>
+                </div>
+                <h1>{{article.Title}}</h1>
+                <div>
+                    <div [innerHTML]="article.ShortDescription"> </div>
+                </div>
+                <div>
+                    <div [innerHTML]="article.Description"> </div>
+                </div>
+            </div>
+            <div nz-col nzLg="6" nzMd="8" nzSm="24" nzXs="24" nzSpan="6">
+                <h4 class="text-center">Xem thêm</h4>
+                <div nz-row *ngIf="menu != null">
+                    <div nz-col nzSpan="24" *ngFor="let article of menu.Articles" class="mg-b">
+                        <app-article-template-horizontal [article]="article"></app-article-template-horizontal>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

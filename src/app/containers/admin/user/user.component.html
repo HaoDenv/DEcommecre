@@ -1,0 +1,72 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Tài khoản quản trị
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row class="mg-t">
+    <div nz-col nzSpan="10">
+        <nz-form-item>
+            <nz-form-label>Từ khóa tìm kiếm</nz-form-label>
+            <nz-form-control>
+                <input (keyup.enter)="getData()" [(ngModel)]="filter.keySearch" type="text" nz-input nzSize="small"
+                    placeholder="Tên tài khoản" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="14">
+        <nz-form-item>
+            <nz-form-control>
+                <button (click)="getData()" nz-button nzSize="small" nzType="primary">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    Tìm kiếm
+                </button>
+                <button (click)="addNew()" nz-button nzSize="small" nzType="primary">
+                    <i nz-icon nzType="plus" nzTheme="outline"></i>
+                    Thêm mới
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24">
+        <nz-table #tblData [nzData]="datas" [nzPageSize]="12">
+            <thead>
+                <tr>
+                    <th>Tên tài khoản</th>
+                    <th>Họ tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th style="width:100px">Hoạt động</th>
+                    <th style="width:160px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tblData.data">
+                    <td>{{ data.UserName }}</td>
+                    <td>{{ data.FullName }}</td>
+                    <td>{{ data.Phone }}</td>
+                    <td>{{ data.Email }}</td>
+                    <td class="text-center">
+                        <i *ngIf="data.Active" nz-icon nzType="check" nzTheme="outline"></i>
+                    </td>
+                    <td class="no-wrap">
+                        <button (click)="showDetail(data)" nz-button nzSize="small" class="mg-r">
+                            Xem chi tiết
+                        </button>
+                        <button nz-popconfirm nzPopconfirmTitle="Xác nhận xóa?" (nzOnConfirm)="delete(data)"
+                            nzPopconfirmPlacement="topRight" nz-button nzDanger nzType="primary" nzSize="small">
+                            Xóa
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<app-user-detail #frmDetail (onSubmit)="onSubmit($event)"></app-user-detail>
+<ngx-spinner></ngx-spinner>

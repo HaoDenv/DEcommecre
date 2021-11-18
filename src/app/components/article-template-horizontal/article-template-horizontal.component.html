@@ -1,0 +1,16 @@
+<div *ngIf="article != null" class="box-article">
+    <div nz-row>
+        <div nz-col nzSpan="8">
+            <div class="article-image">
+                <img [src]="article.Image | hostImageClient" />
+            </div>
+        </div>
+        <div nz-col nzSpan="16">
+            <div class="article-title" style="padding: 0 0 0 5px;">
+                <a routerLink="/bai-viet/{{article.Alias}}">
+                    {{article.Title.substring(0,60)}}...
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

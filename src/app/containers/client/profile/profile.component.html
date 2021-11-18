@@ -1,0 +1,162 @@
+<div class="mg-t-md mg-b-lg">
+    <div class="container">
+        <div nz-row>
+            <div nz-col nzSpan="24" style="margin-bottom: 20px;">
+                <h2>
+                    Tài khoản của tôi
+                    <a routerLink="/dang-xuat" class="mg-r" style="float: right;" nz-button nzSize="small"
+                        nzType="primary" nzDanger>
+                        Đăng xuất
+                    </a>
+                </h2>
+                <div>
+                    Quản lý thông tin hồ sơ để bảo mật tài khoản
+                </div>
+            </div>
+            <div nz-col nzSpan="24">
+                <div style="min-height: 400px;">
+                    <nz-tabset nzTabPosition="left">
+                        <nz-tab nzTitle="Thông tin cá nhân">
+                            <div style="overflow: auto;">
+                                <form nz-form [formGroup]="formData" (ngSubmit)="submitForm()">
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4">Email </nz-form-label>
+                                            <nz-form-control nzSpan="8">
+                                                <input formControlName="Email" type="text" nz-input />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4" nzRequired>Họ và tên </nz-form-label>
+                                            <nz-form-control nzSpan="8" nzErrorTip="Không được để trống!">
+                                                <input formControlName="FullName" type="text" nz-input />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4" nzRequired>Số điện thoại </nz-form-label>
+                                            <nz-form-control nzSpan="8" nzErrorTip="Không được để trống!">
+                                                <input formControlName="PhoneNumber" type="text" nz-input />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4">Giới tính </nz-form-label>
+                                            <nz-form-control nzSpan="8">
+                                                <nz-radio-group formControlName="Gender">
+                                                    <label nz-radio nzValue="Nam">Nam</label>
+                                                    <label nz-radio nzValue="Nữ">Nữ</label>
+                                                    <label nz-radio nzValue="Khác">Khác</label>
+                                                </nz-radio-group>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4">Ngày sinh </nz-form-label>
+                                            <nz-form-control nzSpan="8">
+                                                <nz-date-picker formControlName="Dob" nzPlaceHolder="Chọn ngày"
+                                                    nzFormat="dd-MM-yyyy">
+                                                </nz-date-picker>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4" nzRequired>Địa chỉ giao nhận hàng </nz-form-label>
+                                            <nz-form-control nzSpan="8" nzErrorTip="Không được để trống!">
+                                                <textarea formControlName="Address" rows="4" nz-input></textarea>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="text-center mg-b-lg">
+                                        <div nz-row>
+                                            <div nz-col nzSpan="12">
+                                                <button type="submit" nz-button nzType="primary"
+                                                    [nzLoading]="nzLoading">
+                                                    Cập nhật thông tin
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </nz-tab>
+                        <nz-tab nzTitle="Đơn mua hàng">
+                            <div style="overflow: auto;">
+                                <nz-tabset>
+                                    <nz-tab nzTitle="Tất cả ({{orders.length}})">
+                                        <ng-container *ngFor="let item of orders">
+                                            <app-order-template [order]="item"></app-order-template>
+                                        </ng-container>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Chờ xác nhận ({{filterOrderByStatus(10).length}})">
+                                        <ng-container *ngFor="let item of filterOrderByStatus(10)">
+                                            <app-order-template [order]="item"></app-order-template>
+                                        </ng-container>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Đã xác nhận ({{filterOrderByStatus(20).length}})">
+                                        <ng-container *ngFor="let item of filterOrderByStatus(20)">
+                                            <app-order-template [order]="item"></app-order-template>
+                                        </ng-container>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Đang vận chuyển ({{filterOrderByStatus(30).length}})">
+                                        <ng-container *ngFor="let item of filterOrderByStatus(30)">
+                                            <app-order-template [order]="item"></app-order-template>
+                                        </ng-container>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Đã giao ({{filterOrderByStatus(40).length}})">
+                                        <ng-container *ngFor="let item of filterOrderByStatus(40)">
+                                            <app-order-template [order]="item"></app-order-template>
+                                        </ng-container>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Đã hủy ({{filterOrderByStatus(50).length}})">
+                                        <ng-container *ngFor="let item of filterOrderByStatus(50)">
+                                            <app-order-template [order]="item"></app-order-template>
+                                        </ng-container>
+                                    </nz-tab>
+                                </nz-tabset>
+                            </div>
+                        </nz-tab>
+                        <nz-tab nzTitle="Đổi mật khẩu">
+                            <div style="overflow: auto;">
+                                <form nz-form [formGroup]="formChangePassword" (ngSubmit)="submitChangePassword()">
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4" nzRequired>Mật khẩu cũ </nz-form-label>
+                                            <nz-form-control nzSpan="8" nzErrorTip="Không được để trống!">
+                                                <input formControlName="OldPassword" type="text" nz-input />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="mg-b">
+                                        <nz-form-item>
+                                            <nz-form-label nzSpan="4" nzRequired>Mật khẩu mới </nz-form-label>
+                                            <nz-form-control nzSpan="8" nzErrorTip="Không được để trống!">
+                                                <input formControlName="NewPassword" type="text" nz-input />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div class="text-center mg-b-lg">
+                                        <div nz-row>
+                                            <div nz-col nzSpan="12">
+                                                <button type="submit" nz-button nzType="primary"
+                                                    [nzLoading]="nzLoading">
+                                                    Cập nhật
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </nz-tab>
+                    </nz-tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

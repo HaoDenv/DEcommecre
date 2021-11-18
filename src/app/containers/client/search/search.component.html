@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="box-breadcrumb">
+        <nz-breadcrumb>
+            <nz-breadcrumb-item>
+                <a routerLink="/">Trang chủ</a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>
+                Tìm kiếm cho: {{filter.keySearch}}
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </div>
+    <div>
+        <div nz-row class="mg-b">
+            <div nz-col nzLg="6" nzMd="10" nzSm="12" nzXs="24" nzSpan="6" class="mg-b">
+                <nz-form-item>
+                    <nz-form-label>Sắp xếp theo</nz-form-label>
+                    <nz-form-control>
+                        <nz-select (ngModelChange)="filter.orderBy=$event;getData()" [ngModel]="filter.orderBy">
+                            <nz-option nzLabel="Phù hợp nhất" nzValue="highlight"></nz-option>
+                            <nz-option nzLabel="Giá cao đến thấp" nzValue="price-desc"></nz-option>
+                            <nz-option nzLabel="Giá thấp đến cao" nzValue="price-asc"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="6" nzMd="8" nzSm="12" nzXs="24" nzSpan="5">
+                <nz-form-item>
+                    <nz-form-label>Mức giá</nz-form-label>
+                    <nz-form-control>
+                        <nz-select (ngModelChange)="filter.price=$event;getData()" [ngModel]="filter.price"
+                            nzPlaceHolder="Tất cả">
+                            <nz-option nzLabel="Tất cả" nzValue="all"></nz-option>
+                            <nz-option nzLabel="Trên 30 triệu" nzValue="m30"></nz-option>
+                            <nz-option nzLabel="Từ 20 - 30 triệu" nzValue="f20t30"></nz-option>
+                            <nz-option nzLabel="Từ 10 - 20 triệu" nzValue="f10t20"></nz-option>
+                            <nz-option nzLabel="Từ 5 - 10 triệu" nzValue="f5t10"></nz-option>
+                            <nz-option nzLabel="Dưới 5 triệu" nzValue="l5"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col nzSpan="4-8" *ngFor="let product of products">
+                <app-product-template [product]="product"></app-product-template>
+            </div>
+            <div nz-col nzSpan="24" class="filter-more">
+                <button (click)="showMore()" type="button" nz-button nzType="primary" [nzLoading]="nzLoading">Xem
+                    thêm</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Danh sách khách hàng
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row class="mg-t">
+    <div nz-col nzSpan="10">
+        <nz-form-item>
+            <nz-form-label>Từ khóa tìm kiếm</nz-form-label>
+            <nz-form-control>
+                <input (keyup.enter)="getData()" [(ngModel)]="filter.keySearch" type="text" nz-input nzSize="small"
+                    placeholder="Tên khách hàng" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="14">
+        <nz-form-item>
+            <nz-form-control>
+                <button (click)="getData()" nz-button nzSize="small" nzType="primary">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    Tìm kiếm
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24">
+        <nz-table #tblData [nzData]="datas" [nzPageSize]="12">
+            <thead>
+                <tr>
+                    <th>Tên khách hàng</th>
+                    <th class="no-wrap">Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Ngày sinh</th>
+                    <th class="no-wrap">Giới tính</th>
+                    <th>Địa chỉ</th>
+                    <th style="width:80px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tblData.data">
+                    <td class="no-wrap">{{ data.FullName }}</td>
+                    <td>{{ data.PhoneNumber }}</td>
+                    <td class="no-wrap">{{ data.Email }}</td>
+                    <td class="no-wrap">{{ data.Dob | date:'dd-MM-yyyy' }}</td>
+                    <td class="no-wrap">{{ data.Gender }}</td>
+                    <td>{{ data.Address }}</td>
+                    <td class="no-wrap">
+                        <button (click)="showDetail(data)" nz-button nzSize="small" class="mg-r">
+                            Xem chi tiết
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<app-customer-detail #frmDetail></app-customer-detail>
+<ngx-spinner></ngx-spinner>

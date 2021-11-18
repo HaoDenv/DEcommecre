@@ -1,0 +1,171 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="900" [nzVisible]="visible"
+    nzTitle="Thông tin khách hàng" [nzFooter]="footerTpl" (nzOnClose)="close()">
+    <div nz-form *nzDrawerContent nzLayout="vertical">
+        <ng-container *ngIf="customer != null">
+            <div nz-row>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Tên khách hàng </nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" [value]="customer.FullName" disabled />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Số điện thoại </nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" [value]="customer.PhoneNumber" disabled />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Email </nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" [value]="customer.Email" disabled />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Ngày sinh </nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" [value]="customer.Dob | date:'dd-MM-yyyy'"
+                                disabled />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Giới tính </nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" [value]="customer.Gender" disabled />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="18">
+                    <nz-form-item>
+                        <nz-form-label>Địa chỉ </nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input nzSize="small" [value]="customer.Address" disabled />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row>
+                <div nz-col nzSpan="24" class="mg-t">
+                    <h4>Đơn hàng đã đặt</h4>
+                    <div>
+                        <nz-table #tblData [nzData]="customer.Orders" [nzPageSize]="5">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Ngày đặt hàng</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Địa chỉ liên hệ</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of tblData.data">
+                                    <td>{{ data.Id }}</td>
+                                    <td>{{ data.Created | date:'HH:mm dd-MM-yyyy' }}</td>
+                                    <td>{{ data.PhoneNumber }}</td>
+                                    <td>{{ data.Address }}</td>
+                                    <td class="text-right">{{ data.TotalAmount | number }}</td>
+                                    <td>{{ data.Status | orderStatus }}</td>
+                                    <td>
+                                        <a (click)="showOrderDetail(data)">Xem chi tiết</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button nz-button (click)="close()">Đóng</button>
+        </div>
+    </ng-template>
+
+</nz-drawer>
+
+
+<nz-modal [(nzVisible)]="isVisibleModal" nzTitle="Chi tiết đơn hàng" [nzWidth]="1000" [nzStyle]="{ top: '20px' }"
+    (nzOnCancel)="isVisibleModal = !isVisibleModal" [nzFooter]="modalFooter">
+    <ng-container *nzModalContent>
+        <div *ngIf="orderSelected != null" nz-row>
+            <div nz-col nzSpan="24">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr style="background: #5189B9;color: white;">
+                            <th colSpan="2">Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                        <tr *ngFor="let orderDetail of orderSelected.OrderDetails">
+                            <td class="text-center">
+                                <img [src]="orderDetail.ProductImage | pipeHostImage"
+                                    style="width: 50px;border: 1px solid #dcdcdc;padding: 1px;min-width: 50px;" />
+                            </td>
+                            <td>
+                                <div>
+                                    {{orderDetail.ProductName}}
+                                </div>
+                                <div *ngIf="orderDetail.Attribute != null && orderDetail.Attribute != ''"
+                                    style="border: 1px solid #dcdcdc;display: inline-block;padding: 2px 5px 2px 10px;margin: 5px 0 0;">
+                                    <div [innerHTML]="orderDetail.Attribute"> </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <b class="mg-r">
+                                    <small>
+                                        <s>
+                                            {{orderDetail.ProductPrice | number}} ₫
+                                        </s>
+                                    </small>
+                                </b>
+                                <b>
+                                    {{orderDetail.ProductDiscountPrice | number}} ₫
+                                </b>
+                            </td>
+                            <td class="text-center">
+                                {{orderDetail.Qty}}
+                            </td>
+                            <td class="text-right">
+                                <b>
+                                    {{(orderDetail.ProductDiscountPrice * orderDetail.Qty) | number}} ₫
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" colspan="4">
+                                <h4>Tổng tiền</h4>
+                            </td>
+                            <td class="text-right">
+                                <h4 style="color:red">
+                                    {{getTotalAmount | number}} ₫
+                                </h4>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #modalFooter>
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button (click)="isVisibleModal = !isVisibleModal">Đóng</button>
+            </nz-form-control>
+        </nz-form-item>
+    </ng-template>
+</nz-modal>

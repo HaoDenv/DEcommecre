@@ -1,0 +1,62 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item>
+        <i nz-icon nzType="home"></i>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        Báo cáo theo sản phẩm
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row class="mg-t">
+    <div nz-col nzSpan="8">
+        <nz-form-item>
+            <nz-form-label>Từ khóa tìm kiếm</nz-form-label>
+            <nz-form-control>
+                <input (keyup.enter)="getData()" [(ngModel)]="filter.keySearch" type="text" nz-input nzSize="small"
+                    placeholder="Mã sản phẩm, tên sản phẩm" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="8">
+        <nz-form-item>
+            <nz-form-label>Ngày đặt hàng</nz-form-label>
+            <nz-form-control>
+                <nz-range-picker [nzPlaceHolder]="['Từ ngày','Đến ngày']" [(ngModel)]="filter.rangeDate" nzSize="small"
+                    [nzFormat]="'dd-MM-yyyy'" class="width-full" style="max-width: 250px;">
+                </nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="2">
+        <nz-form-item>
+            <nz-form-control>
+                <button (click)="getData()" nz-button nzType="primary" nzSize="small">Tìm kiếm</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24" class="mg-t">
+        <nz-table #tblData [nzData]="datas" [nzPageSize]="12">
+            <thead>
+                <tr>
+                    <th style="width:80px">Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng bán</th>
+                    <th>Doanh thu</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tblData.data">
+                    <td class="text-center">
+                        <img [src]="data.Image | pipeHostImage" alt="" class="img-product">
+                    </td>
+                    <td>{{ data.Name }}</td>
+                    <td class="text-right">{{ data.TotalQty | number }}</td>
+                    <td class="text-right">{{ data.TotalAmount | number }}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<ngx-spinner></ngx-spinner>

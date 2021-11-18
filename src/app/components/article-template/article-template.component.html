@@ -1,0 +1,10 @@
+<div *ngIf="article != null" class="box-article">
+    <div class="article-image">
+        <img [src]="article.Image | hostImageClient" />
+    </div>
+    <div class="article-title text-center">
+        <a routerLink="/bai-viet/{{article.Alias}}">
+            {{article.Title}}
+        </a>
+    </div>
+</div>

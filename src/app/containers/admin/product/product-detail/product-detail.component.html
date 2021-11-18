@@ -1,0 +1,212 @@
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzMaskClosable]="false" [nzWidth]="'90%'" [nzVisible]="visible"
+    [nzTitle]="isAddNew?'Thêm mới':'Thông tin chi tiết'" [nzFooter]="footerTpl" (nzOnClose)="close()">
+    <form nz-form *nzDrawerContent nzLayout="vertical" [formGroup]="formData" (ngSubmit)="submit()">
+        <div nz-row>
+            <div nz-col nzSpan="5">
+                <div nz-row>
+                    <div nz-col nzSpan="24" class="mg-b">
+                        <nz-form-item>
+                            <nz-form-label>Hình ảnh</nz-form-label>
+                            <nz-form-control>
+                                <button-upload (onload)="onloadImage($event)" [srcDefault]="srcImage">
+                                </button-upload>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="24">
+                        <div class="clearfix">
+                            <nz-upload nzListType="picture-card" [(nzFileList)]="fileList">
+                                <div>
+                                    <i nz-icon nzType="plus"></i>
+                                    <div style="margin-top: 8px">Thêm ảnh</div>
+                                </div>
+                            </nz-upload>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div nz-col nzSpan="19">
+                <div nz-row>
+                    <div nz-col nzSpan="6">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Danh mục sản phẩm </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <nz-select formControlName="MenuId" nzSize="small" nzPlaceHolder="------"
+                                    class="width-full">
+                                    <nz-option *ngFor="let item of menus" [nzValue]="item.Id"
+                                        [nzLabel]="item.ParentMenu == null?item.Name:' &emsp;__'+item.Name">
+                                    </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="6">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Trạng thái </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <nz-select formControlName="Status" nzSize="small" nzPlaceHolder="------"
+                                    class="width-full">
+                                    <nz-option [nzValue]="10" nzLabel="Đang bán"> </nz-option>
+                                    <nz-option [nzValue]="20" nzLabel="Dừng bán"> </nz-option>
+                                    <nz-option [nzValue]="30" nzLabel="Hết hàng"> </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="4">
+                        <nz-form-item>
+                            <nz-form-label>Thứ tự hiển thị</nz-form-label>
+                            <nz-form-control class="width-full">
+                                <nz-input-number nzSize="small" formControlName="Index" [nzMin]="1" [nzStep]="1">
+                                </nz-input-number>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="4">
+                        <nz-form-item>
+                            <nz-form-label>Sản phẩm nổi bật</nz-form-label>
+                            <nz-form-control>
+                                <label nz-checkbox formControlName="Selling"></label>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Tên sản phẩm </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <textarea (keyup)="changeName($event)" type="text" nz-input
+                                    formControlName="Name"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Alias </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <textarea type="text" nz-input formControlName="Alias"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="6">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Giá niêm yết </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <input currencyMask nz-input nzSize="small" formControlName="Price" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="6">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Giá bán </nz-form-label>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <input currencyMask nz-input nzSize="small" formControlName="DiscountPrice" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row>
+                    <div nz-col nzSpan="24">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Không được để trống!">
+                                <nz-tabset>
+                                    <nz-tab nzTitle="Mô tả ngắn">
+                                        <angular-editor formControlName="ShortDescription" [config]="config">
+                                        </angular-editor>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Mô tả chi tiết">
+                                        <angular-editor formControlName="Description" [config]="config">
+                                        </angular-editor>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Thuộc tính sản phẩm">
+                                        <nz-form-item>
+                                            <nz-form-label>Thuộc tính sản phẩm</nz-form-label>
+                                            <nz-form-control formArrayName="ProductAttributes">
+                                                <div>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <td style="width: 50px;"></td>
+                                                                <td style="width: 130px;">Thuộc tính</td>
+                                                                <td>Giá trị</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr
+                                                                *ngFor="let item of ProductAttributes.controls; let index = index">
+                                                                <ng-container [formGroupName]="index">
+                                                                    <td>
+                                                                        <button nz-popconfirm
+                                                                            nzPopconfirmTitle="Xác nhận xóa?"
+                                                                            (nzOnConfirm)="deleteAttribute(index)"
+                                                                            nzPopconfirmPlacement="topRight" nz-button
+                                                                            nzDanger nzType="primary" nzSize="small">
+                                                                            <i nz-icon nzType="delete"
+                                                                                nzTheme="outline"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <nz-select formControlName="AttributeId"
+                                                                            nzSize="small" nzPlaceHolder="------"
+                                                                            class="width-full">
+                                                                            <nz-option *ngFor="let item of attribute"
+                                                                                [nzValue]="item.Id"
+                                                                                [nzLabel]="item.Name">
+                                                                            </nz-option>
+                                                                        </nz-select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <nz-select formControlName="Attributes"
+                                                                            nzMode="tags" nzSize="small"
+                                                                            [nzTokenSeparators]="[',']">
+                                                                        </nz-select>
+                                                                    </td>
+                                                                </ng-container>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colSpan="3">
+                                                                    <button (click)="addAttribute()" type="button"
+                                                                        nz-button nzSize="small" nzType="primary">
+                                                                        <i nz-icon nzType="plus" nzTheme="outline"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Cài đặt sản phẩm liên quan">
+                                        <nz-form-item>
+                                            <nz-form-label>Chọn sản phẩm liên quan trong danh sách dưới đây
+                                            </nz-form-label>
+                                            <nz-form-control nzErrorTip="Không được để trống!">
+                                                <nz-select nzMode="multiple" formControlName="ProductRelateds">
+                                                    <nz-option *ngFor="let product of allProducts" nzCustomContent
+                                                        [nzValue]="product.Id" [nzLabel]="product.Name">
+                                                        <img class="img-product-select" nz-image
+                                                            [nzSrc]="product.Image | pipeHostImage" alt="" />
+                                                        {{product.Name}}
+                                                    </nz-option>
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </nz-tab>
+                                </nz-tabset>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button nz-button (click)="close()">Hủy</button>
+            <button (click)="submit()" nz-button nzType="primary">Lưu lại</button>
+        </div>
+    </ng-template>
+
+</nz-drawer>

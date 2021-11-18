@@ -1,0 +1,31 @@
+<div *ngIf="product != null">
+    <nz-card nzHoverable [nzCover]="coverTemplate">
+        <div align="center">
+            <div class="product-name">
+                <a routerLink="/san-pham/{{product.Alias}}">
+                    {{product.Name}}
+                </a>
+            </div>
+            <div class="product-price">
+                <div class="product-unit-price">
+                    {{product.Price | number}} ₫
+                </div>
+                <div class="product-price-discount">
+                    {{product.DiscountPrice | number}} ₫
+                </div>
+            </div>
+            <div (click)="addToCart()" class="product-add-cart">
+                <span>
+                    Thêm vào giỏ
+                </span>
+            </div>
+        </div>
+    </nz-card>
+    <ng-template #coverTemplate>
+        <div class="box-product-image">
+            <a routerLink="/san-pham/{{product.Alias}}">
+                <img  [src]="product.Image | hostImageClient" />
+            </a>
+        </div>
+    </ng-template>
+</div>
